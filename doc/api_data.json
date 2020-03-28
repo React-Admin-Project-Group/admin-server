@@ -249,5 +249,192 @@
     "version": "0.0.0",
     "filename": "router/AdminRouter.js",
     "groupTitle": "Admin"
+  },
+  {
+    "type": "post",
+    "url": "/menu",
+    "title": "添加菜谱",
+    "name": "addMenu",
+    "group": "Menu",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "menu_name",
+            "description": "<p>添加菜谱的名字</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "menu_path",
+            "description": "<p>添加菜谱的图片地址</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "router/MenuTypeRouter.js",
+    "groupTitle": "Menu"
+  },
+  {
+    "type": "delete",
+    "url": "/menu",
+    "title": "删除菜谱",
+    "name": "menuDel",
+    "group": "Menu",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>要删除的用户_id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "router/MenuTypeRouter.js",
+    "groupTitle": "Menu"
+  },
+  {
+    "type": "post",
+    "url": "/menu",
+    "title": "获取菜谱列表",
+    "name": "menuList",
+    "group": "Menu",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>信息提示</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>菜谱列表</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "router/MenuTypeRouter.js",
+    "groupTitle": "Menu"
+  },
+  {
+    "type": "put",
+    "url": "/menu",
+    "title": "修改菜谱",
+    "name": "menuUpdate",
+    "group": "Menu",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>要修改的菜谱的_id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "menu_name",
+            "description": "<p>要修改的菜谱的名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "menu_path",
+            "description": "<p>要修改的菜谱的图片地址</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "router/MenuTypeRouter.js",
+    "groupTitle": "Menu"
   }
 ]

@@ -17,6 +17,10 @@ const AdminRouter = require('./router/AdminRouter')
 
 app.use('/admin', AdminRouter)
 
+const MenuTypeRouter = require('./router/MenuTypeRouter')
+
+app.use('/menu', MenuTypeRouter)
+
 app.listen(3000, () => {
   console.log('服务器启动，端口号3000')
 })
