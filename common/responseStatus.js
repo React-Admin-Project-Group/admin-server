@@ -24,6 +24,10 @@ const Token_NOT_COMPLETE = {
   code: 10005,
   msg: '用户token丢失'
 }
+const IMG_TYPE_ERROR = {
+  code: 10006,
+  msg: '图片类型错误'
+}
 /* 用户错误 */
 const USER_NOT_LOGGED_IN = {
   code: 20001,
@@ -72,6 +76,10 @@ const DATA_ALREADY_EXISTED = {
   code: 50003,
   msg: '数据已存在'
 }
+const DATA_IMG_LARGE = {
+  code: 50004,
+  msg: '图片尺寸过大'
+}
 /* 接口错误：60001-69999 */
 const INTERFACE_INNER_INVOKE_ERROR = {
   code: 60001,
@@ -102,6 +110,7 @@ module.exports = {
   PARAM_TYPE_BIND_ERROR,
   PARAM_NOT_COMPLETE,
   Token_NOT_COMPLETE,
+  IMG_TYPE_ERROR,
   USER_NOT_LOGGED_IN,
   USER_LOGIN_ERROR,
   USER_ACCOUNT_FORBIDDEN,
@@ -113,6 +122,7 @@ module.exports = {
   RESULT_DATA_NONE,
   DATA_IS_WRONG,
   DATA_ALREADY_EXISTED,
+  DATA_IMG_LARGE,
   INTERFACE_INNER_INVOKE_ERROR,
   INTERFACE_ADDRESS_INVALID,
   PERMISSION_NO_ACCESS,

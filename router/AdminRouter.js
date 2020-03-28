@@ -10,6 +10,8 @@ const { verifyToken } = require('../utils/jwt')
  * @apiName adminList
  * @apiGroup Admin
  *
+ * @apiParam {Number} page 当前页面数(不传默认为1)
+ * @apiParam {Number} pageSize 每页的页码数(不传默认为5)
  *
  * @apiSuccess {String} code 状态码
  * @apiSuccess {String} msg  信息提示
@@ -17,9 +19,10 @@ const { verifyToken } = require('../utils/jwt')
  * 
  */
 router.get('/', tokenMiddleWare, (req, res) => {
-  AdminControl.adminList()
+  const { page, pageSize } = req.query
+  AdminControl.adminList(page, pageSize)
     .then(result => {
-      res.send(Object.assign({}, ResponseStatus.SUCCESS, { list: result }))
+      res.send(Object.assign({}, ResponseStatus.SUCCESS, result))
     })
     .catch(err => {
       res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)

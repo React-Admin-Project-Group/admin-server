@@ -14,9 +14,11 @@ app.use(bodyParser.json())
 app.use('/public', express.static(path.join(__dirname, './public')))
 
 const AdminRouter = require('./router/AdminRouter')
-
+const ImgUploadRouter = require('./router/ImgUploadRouter')
+const LogRouter = require('./router/LogRouter')
 app.use('/admin', AdminRouter)
-
+app.use('/upload', ImgUploadRouter)
+app.use('/log', tokenMiddleWare, LogRouter)
 app.listen(3000, () => {
   console.log('服务器启动，端口号3000')
 })

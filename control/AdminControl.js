@@ -3,16 +3,23 @@ const ResponseCode = require('../common/responseStatus')
 const { createToken } = require('../utils/jwt')
 const AdminControl = {
   /* 获取管理员列表 */
-  async adminList () {
+  async adminList (page = 1, pageSize = 5) {
+    const count = await AdminModel.countDocuments()
+
     const result = await AdminModel.find()
+      .limit(Number(pageSize)).skip((page - 1) * pageSize)
+      .sort({_id: -1})
     if (result) {
-      return result.map(item => {
-        return {
-          _id: item['_id'],
-          username: item.username,
-          authority: item.authority
-        }
-      })
+      return {
+        list: result.map(item => {
+          return {
+            _id: item['_id'],
+            username: item.username,
+            authority: item.authority
+          }
+        }),
+        count
+      }
     }
   },
   /* 添加管理员 */
