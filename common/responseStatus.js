@@ -57,6 +57,10 @@ const USER_Login_Token_Error = {
   code: 20007,
   msg: '用户token不匹配'
 }
+const DATA_NOT_EXIST = {
+  code: 20008,
+  msg: '该记录不存在'
+}
 /* 业务错误：30001-39999 */
 /* 系统错误：40001-49999 */
 const SYSTEM_INNER_ERROR = {
@@ -118,6 +122,7 @@ module.exports = {
   USER_HAS_EXISTED,
   USER_Login_Expire,
   USER_Login_Token_Error,
+  DATA_NOT_EXIST,
   SYSTEM_INNER_ERROR,
   RESULT_DATA_NONE,
   DATA_IS_WRONG,
@@ -125,6 +130,7 @@ module.exports = {
   DATA_IMG_LARGE,
   INTERFACE_INNER_INVOKE_ERROR,
   INTERFACE_ADDRESS_INVALID,
+  INTERFACE_REQUEST_TIMEOUT,
   PERMISSION_NO_ACCESS,
   PERMISSION_NOT_ENABLE
 }

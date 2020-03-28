@@ -18,11 +18,13 @@ const ImgUploadRouter = require('./router/ImgUploadRouter')
 const LogRouter = require('./router/LogRouter')
 const BannerRouter = require('./router/BannerRouter')
 const MenuTypeRouter = require('./router/MenuTypeRouter')
+const MenuKindRouter = require('./router/MenuKindRouter')
 app.use('/admin', AdminRouter)
 app.use('/upload', ImgUploadRouter)
 app.use('/log', tokenMiddleWare, LogRouter)
 app.use('/banner',BannerRouter)
 app.use('/menu', MenuTypeRouter)
+app.use('/kinds',tokenMiddleWare,MenuKindRouter)
 
 app.listen(3000, () => {
   console.log('服务器启动，端口号3000')
