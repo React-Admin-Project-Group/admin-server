@@ -20,6 +20,10 @@ const PARAM_NOT_COMPLETE = {
   code: 10004,
   msg: '参数缺失'
 }
+const Token_NOT_COMPLETE = {
+  code: 10005,
+  msg: '用户token丢失'
+}
 /* 用户错误 */
 const USER_NOT_LOGGED_IN = {
   code: 20001,
@@ -97,6 +101,7 @@ module.exports = {
   PARAM_IS_BLANK,
   PARAM_TYPE_BIND_ERROR,
   PARAM_NOT_COMPLETE,
+  Token_NOT_COMPLETE,
   USER_NOT_LOGGED_IN,
   USER_LOGIN_ERROR,
   USER_ACCOUNT_FORBIDDEN,

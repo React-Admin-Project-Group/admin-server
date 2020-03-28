@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
-
+const tokenMiddleWare = require('./middleware/tokenMiddleWare')
 // 启动服务器的同时启动数据库
 require('./db/connect')
 

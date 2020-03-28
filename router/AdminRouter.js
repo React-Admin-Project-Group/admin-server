@@ -2,6 +2,7 @@ const express = require('express')
 const AdminControl = require('../control/AdminControl')
 const ResponseStatus = require('../common/responseStatus')
 const router = express.Router()
+const tokenMiddleWare = require('../middleware/tokenMiddleWare')
 const { verifyToken } = require('../utils/jwt')
 
 /**
@@ -15,7 +16,7 @@ const { verifyToken } = require('../utils/jwt')
  * @apiSuccess {Array} list  管理员列表
  * 
  */
-router.get('/', (req, res) => {
+router.get('/', tokenMiddleWare, (req, res) => {
   AdminControl.adminList()
     .then(result => {
       res.send(Object.assign({}, ResponseStatus.SUCCESS, { list: result }))
@@ -38,7 +39,7 @@ router.get('/', (req, res) => {
  * @apiSuccess {String} msg  信息提示
  * 
  */
-router.put('/', (req, res) => {
+router.put('/', tokenMiddleWare, (req, res) => {
   let { username, password = '666666', authority = 0 } = req.body
   if (username) {
     AdminControl.adminRegister({ username, password, authority })
