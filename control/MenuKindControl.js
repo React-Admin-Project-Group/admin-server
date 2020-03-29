@@ -30,6 +30,7 @@ const MenuKindControl={
         if(!isExist){
             result = ResponseCode.DATA_NOT_EXIST
         }else{
+            const infos =await MenuKindModel.find({_id})
             const child = infos[0].child_kinds.join(',')
             if(child.length !== 0){
                 result = ResponseCode.CHILD_NOT_DELETE
