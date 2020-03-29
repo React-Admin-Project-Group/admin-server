@@ -6,13 +6,7 @@ const MenuKindControl={
     async KindsList(){
         const result =await MenuKindModel.find()
         if(result){
-            return result.map(item =>{
-                return {
-                    _id:item['_id'],
-                    kind_name:item['kind_name'],
-                    child_kinds:item['child_kinds'],
-                }
-            })
+            return result
         }
     },
     /* 添加菜谱大类 */ 
@@ -36,7 +30,13 @@ const MenuKindControl={
         if(!isExist){
             result = ResponseCode.DATA_NOT_EXIST
         }else{
-            result = await MenuKindModel.deleteOne({_id})
+            const infos =await MenuKindModel.find({_id})
+            const child = infos[0].child_kinds.join(',')
+            if(child.length !== 0){
+                result = ResponseCode.CHILD_NOT_DELETE
+            }else{
+                result = await MenuKindModel.deleteOne({_id})
+            }
         }
         if(result){
             return result
@@ -48,6 +48,28 @@ const MenuKindControl={
     async kindsAlter(_id,updateInfo){
         // _id 要修改的菜谱大类的Id update 修改的目标数据
         let result=await MenuKindModel.updateOne({_id},updateInfo)
+        if(result){
+            return result
+        }else{
+            throw '请传递有效的菜谱大类名id'
+        }
+    },
+    /* 根据id新增单个菜谱子类别 */ 
+    async addChild_type(_id,child_id){
+        // _id 要修改的菜谱大类的Id child_id 子类别中新增的子类
+        const info =await MenuKindModel.find({_id})
+        let kinds = info[0].child_kinds
+        const kind_name = info[0].kind_name
+        let child_kinds = []
+        if(kinds.length == 0) {
+            kinds.push(child_id)
+            child_kinds = kinds
+        }else {
+            let arr = kinds.join(',').split(',')
+            arr.push(child_id)
+            child_kinds = arr
+        }
+        let result=await MenuKindModel.updateOne({_id},{kind_name,child_kinds})
         if(result){
             return result
         }else{
