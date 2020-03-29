@@ -1,8 +1,8 @@
 const { verifyToken } = require('../utils/jwt')
 const AdminControl = require('../control/AdminControl')
 const ResponseStatus = require('../common/responseStatus')
+const getIp  = require('../common/getIp')
 const tokenMiddleWare = (req, res, next) => {
-  // console.log('req.headers:', )authorization
   if (req.headers.authorization) {
     const token = req.headers.authorization.split('Bearer ')[1]
     if (!token) { 
@@ -13,9 +13,13 @@ const tokenMiddleWare = (req, res, next) => {
     if (tokenState) {
       AdminControl.tokenCheck(tokenState._id, token)
         .then(() => {
+          global.user_id = tokenState._id
+          global.ip = getIp(req)
           next()
         })
         .catch((err) => {
+          global.user_id = ''
+          global.ip = ''
           res.send(ResponseStatus.USER_Login_Token_Error)
         })
     } else {

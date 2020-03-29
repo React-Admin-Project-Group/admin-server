@@ -17,9 +17,9 @@ const router = express.Router()
  * 
  */
 router.get('/', (req, res) => {
-  const { user_id } = req.query
+  const { user_id, page = 1, pageSize = 5, startTime, endTime } = req.query
   if (user_id) {
-    LogControl.logList(user_id)
+    LogControl.logList(user_id, page, pageSize, startTime, endTime)
       .then(result => {
         res.send(Object.assign({}, ResponseStatus.SUCCESS, result))
       })
@@ -29,34 +29,18 @@ router.get('/', (req, res) => {
   } else {
     res.send(ResponseStatus.PARAM_NOT_COMPLETE)
   }
-  
 })
 
-/**
- * @api {post} /log 获取管理员日志信息
- * @apiName logAdd
- * @apiGroup Log
- *
- * @apiParam {String} user_id 用户id
- * @apiParam {String} log 用户操作日志
- *
- * @apiSuccess {String} code 状态码
- * @apiSuccess {String} msg  信息提示
- * @apiSuccess {Array} list  日志列表
- * @apiSuccess {Number} count  日志列表数量
- * 
- */
-router.post('/', (req, res) => {
-  const { user_id, log } = req.body
-  if (user_id, log) {
-    LogControl.logAdd(user_id, log)
+router.delete('/', (req, res) => {
+  const { del_ids } = req.body
+  if (del_ids.length) {
+    LogControl.logDel(del_ids)
       .then(result => {
-        res.send(Object.assign({}, ResponseStatus.SUCCESS, { msg: '操作日志添加成功' }))
+        res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '删除成功'}))
       })
-      .catch(msg => {
+      .catch(err => {
         res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)
       })
-
   } else {
     res.send(ResponseStatus.PARAM_NOT_COMPLETE)
   }
