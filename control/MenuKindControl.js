@@ -53,6 +53,28 @@ const MenuKindControl={
         }else{
             throw '请传递有效的菜谱大类名id'
         }
+    },
+    /* 根据id新增单个菜谱子类别 */ 
+    async addChild_type(_id,child_id){
+        // _id 要修改的菜谱大类的Id child_id 子类别中新增的子类
+        const info =await MenuKindModel.find({_id})
+        let kinds = info[0].child_kinds
+        const kind_name = info[0].kind_name
+        let child_kinds = []
+        if(kinds.length == 0) {
+            kinds.push(child_id)
+            child_kinds = kinds
+        }else {
+            let arr = kinds.join(',').split(',')
+            arr.push(child_id)
+            child_kinds = arr
+        }
+        let result=await MenuKindModel.updateOne({_id},{kind_name,child_kinds})
+        if(result){
+            return result
+        }else{
+            throw '请传递有效的菜谱大类名id'
+        }
     }
 }
 module.exports= MenuKindControl

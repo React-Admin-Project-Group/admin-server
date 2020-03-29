@@ -104,5 +104,27 @@ router.put('/',(req,res)=>{
         res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
     })
 })
+/**
+ * @api {put} /kinds/add  增加菜谱子类别
+ * @apiName addChild_type
+ * @apiGroup menuKinds
+ *
+ * @apiParam {String} _id 要修改的菜谱大类名的_id
+ * @apiParam {String} child_id 要增加的子类别的id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ **/
+router.put('/add',(req,res)=>{
+    let {_id,child_id}=req.body
+    MenuKindControl.addChild_type(_id,child_id)
+    .then(()=>{
+        res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'}))
+    })
+    .catch(()=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
 
 module.exports=router
