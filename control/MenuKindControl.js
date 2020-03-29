@@ -6,13 +6,7 @@ const MenuKindControl={
     async KindsList(){
         const result =await MenuKindModel.find()
         if(result){
-            return result.map(item =>{
-                return {
-                    _id:item['_id'],
-                    kind_name:item['kind_name'],
-                    child_kinds:item['child_kinds'],
-                }
-            })
+            return result
         }
     },
     /* 添加菜谱大类 */ 
@@ -36,7 +30,12 @@ const MenuKindControl={
         if(!isExist){
             result = ResponseCode.DATA_NOT_EXIST
         }else{
-            result = await MenuKindModel.deleteOne({_id})
+            const child = infos[0].child_kinds.join(',')
+            if(child.length !== 0){
+                result = ResponseCode.CHILD_NOT_DELETE
+            }else{
+                result = await MenuKindModel.deleteOne({_id})
+            }
         }
         if(result){
             return result

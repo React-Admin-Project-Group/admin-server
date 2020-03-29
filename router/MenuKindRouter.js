@@ -71,6 +71,8 @@ router.delete('/',(req,res)=>{
         // console.log(data)
         if(data.code === 20008) {
             res.send(data);
+        }else if(data.code === 20009){
+            res.send(data);
         }else {
             res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'删除成功'}))
         }
