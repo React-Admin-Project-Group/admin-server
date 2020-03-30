@@ -22,7 +22,7 @@ const MenuKindRouter = require('./router/MenuKindRouter')
 app.use('/admin', AdminRouter)
 app.use('/upload', tokenMiddleWare, ImgUploadRouter)
 app.use('/log', tokenMiddleWare, LogRouter)
-app.use('/banner',BannerRouter)
+app.use('/banner', tokenMiddleWare, BannerRouter)
 app.use('/menu', MenuTypeRouter)
 app.use('/kinds',tokenMiddleWare,MenuKindRouter)
 

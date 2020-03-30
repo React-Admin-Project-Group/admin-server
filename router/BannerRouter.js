@@ -2,6 +2,7 @@ const express = require('express');
 const BannerControl = require('../control/BannerControl');
 const ResponseStatus = require('../common/responseStatus');
 const router = express.Router();
+const LogControl = require('../control/LogControl')
 
 /**
  * @api {get} /banner 获取广告数据列表
@@ -16,9 +17,10 @@ const router = express.Router();
  */
 
 router.get('/', (req,res) => {
-    BannerControl.getBanner()
+    const { page, pageSize } = req.query
+    BannerControl.getBanner(page, pageSize)
     .then((result)=>{
-        res.send(Object.assign({},ResponseStatus.SUCCESS,{list:result}))
+        res.send(Object.assign({},ResponseStatus.SUCCESS, result))
     })
     .catch((err)=>{
         res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)
@@ -41,12 +43,14 @@ router.get('/', (req,res) => {
 
 router.post('/',(req,res) => {
     let {banner_id, banner_name, banner_type} = req.body
-    if(banner_name){
+    if(banner_id){
         BannerControl.addBanner({banner_id, banner_name, banner_type})
         .then((result)=>{
             if (result) {
                 res.send(ResponseStatus.USER_HAS_EXISTED)
             } else {
+                // 添加添加日志
+                LogControl.logAdd('添加广告:' + banner_id)
                 res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '添加成功'}))
             }
         })
@@ -75,6 +79,8 @@ router.delete('/delete',(req,res)=>{
     const {_id} = req.body
     BannerControl.delBanner(_id)
     .then((result)=>{
+        // 添加添加日志
+        LogControl.logAdd('添加广告:' + _id)
         res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '删除成功'}))
     })
     .catch((msg)=>{
@@ -100,6 +106,7 @@ router.delete('/delete',(req,res)=>{
 
 router.put('/',(req,res)=>{
     const {_id,banner_id,banner_name,banner_type} = req.body
+    // console.log(_id,banner_id,banner_name,banner_type)
     BannerControl.updated(_id,{banner_id,banner_name,banner_type})
     .then((result)=>{
         res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '修改成功'}))
@@ -109,5 +116,32 @@ router.put('/',(req,res)=>{
     })
 })
 
+/**
+ * @api {get} /banner/findOne  根据id查询当前那条数据
+ * @apiName findOne
+ * @apiGroup Banner
+ *
+ * @apiParam {String} _id 通要查询的广告id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ */
+
+router.get('/findOne',(req,res)=>{
+    let {_id} = req.query
+    BannerControl.findOne(_id)
+    .then((data)=>{
+        // console.log(data)
+        if(data.code == 20008){
+            res.send(data)
+        }else{
+            res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'查询成功'},{list:data}))
+        }
+    })
+    .catch((err)=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
 
 module.exports = router
