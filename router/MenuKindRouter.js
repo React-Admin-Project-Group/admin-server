@@ -2,6 +2,7 @@ const express=require('express');
 const router=express.Router();
 const MenuKindControl =require('../control/MenuKindControl');
 const ResponseStatus =require('../common/responseStatus');
+const LogControl = require('../control/LogControl')
 /**
  * @api {get} /kinds 获取菜谱大类名列表
  * @apiName KindsList
@@ -42,11 +43,11 @@ router.post('/',(req,res)=>{
             if(result){
                 res.send(ResponseStatus.USER_HAS_EXISTED)
             }else{
+                LogControl.logAdd('添加菜谱大类：' + kind_name);
                 res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'}))
             }
         })
-        .catch((msg)=>{
-            console.log(msg)
+        .catch(()=>{
             res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)
         })
     }else{
@@ -74,6 +75,7 @@ router.delete('/',(req,res)=>{
         }else if(data.code === 20009){
             res.send(data);
         }else {
+            LogControl.logAdd('删除菜谱大类：' + _id)
             res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'删除成功'}))
         }
     })
@@ -99,6 +101,79 @@ router.put('/',(req,res)=>{
     MenuKindControl.kindsAlter(_id,{kind_name,child_kinds})
     .then(()=>{
         res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'修改成功'}))
+    })
+    .catch(()=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
+/**
+ * @api {put} /kinds/add  增加菜谱子类别
+ * @apiName addChild_type
+ * @apiGroup menuKinds
+ *
+ * @apiParam {String} _id 要修改的菜谱大类名的_id
+ * @apiParam {String} child_id 要增加的子类别的id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ **/
+router.put('/add',(req,res)=>{
+    let {_id,child_id}=req.body
+    MenuKindControl.addChild_type(_id,child_id)
+    .then(()=>{
+        res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'}))
+    })
+    .catch(()=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
+/**
+ * @api {put} /kinds/del  从大类中删除菜谱子类别
+ * @apiName delChild_type
+ * @apiGroup menuKinds
+ *
+ * @apiParam {String} _id 要修改的菜谱大类名的_id
+ * @apiParam {String} child_id 要删除的子类别的id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ **/
+router.delete('/del',(req,res)=>{
+    let {_id,child_id}=req.body
+    MenuKindControl.delChild_type(_id,child_id)
+    .then((data)=>{
+        if(data.code == 20008) {
+            res.send(data)
+        }else {
+            res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'删除成功'}))
+        }
+    })
+    .catch(()=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
+/**
+ * @api {get} /kinds  根据id查询一条记录
+ * @apiName findOne
+ * @apiGroup menuKinds
+ *
+ * @apiParam {String} _id 要查询的菜谱大类名的_id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ **/
+router.get('/findOne',(req,res)=>{
+    let {_id}=req.query
+    MenuKindControl.findOne(_id)
+    .then((data)=>{
+        if(data.code == 20008) {
+            res.send(data)
+        }else {
+            res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'查询成功'},{list:data}))
+        }
     })
     .catch(()=>{
         res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
