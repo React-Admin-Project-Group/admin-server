@@ -65,10 +65,6 @@ const CHILD_NOT_DELETE = {
   code: 20009,
   msg: '子类未删除'
 }
-const DATA_HAS_EXISTED = {
-  code: 20010,
-  msg: '数据已存在'
-}
 /* 业务错误：30001-39999 */
 /* 系统错误：40001-49999 */
 const SYSTEM_INNER_ERROR = {
@@ -132,7 +128,6 @@ module.exports = {
   USER_Login_Token_Error,
   DATA_NOT_EXIST,
   CHILD_NOT_DELETE,
-  DATA_HAS_EXISTED,
   SYSTEM_INNER_ERROR,
   RESULT_DATA_NONE,
   DATA_IS_WRONG,

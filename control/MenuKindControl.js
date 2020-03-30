@@ -15,7 +15,7 @@ const MenuKindControl={
         //判断菜谱大类名是否重复
         const isExist=await MenuKindModel.findOne({kind_name})
         if(isExist){
-            return ResponseCode.DATA_HAS_EXISTED
+            return ResponseCode.DATA_ALREADY_EXISTED
         }else{
             await MenuKindModel.insertMany({
                 kind_name,
@@ -31,11 +31,15 @@ const MenuKindControl={
             result = ResponseCode.DATA_NOT_EXIST
         }else{
             const infos =await MenuKindModel.find({_id})
-            const child = infos[0].child_kinds.join(',')
-            if(child.length !== 0){
-                result = ResponseCode.CHILD_NOT_DELETE
-            }else{
+            if(infos[0].child_kinds == null) {
                 result = await MenuKindModel.deleteOne({_id})
+            }else {
+                const child = infos[0].child_kinds.join(',')
+                if(child.length !== 0){
+                    result = ResponseCode.CHILD_NOT_DELETE
+                }else{
+                    result = await MenuKindModel.deleteOne({_id})
+                }
             }
         }
         if(result){
@@ -83,12 +87,12 @@ const MenuKindControl={
         let kinds = info[0].child_kinds
         const kind_name = info[0].kind_name
         let child_kinds = []
-        let index = kinds.indexOf(child_id)
         if(kinds.length !== 0) {
             child_kinds = kinds.join(',').split(',')
         }else {
             child_kinds = kinds
         }
+        let index = child_kinds.indexOf(child_id)
         if(index !== -1) {
             child_kinds.splice(index,1)
         }else {
@@ -104,7 +108,7 @@ const MenuKindControl={
     /* 根据id查询单条记录 */ 
     async findOne(_id){
         // _id 要查询的菜谱大类的Id
-        const info =await MenuKindModel.find({_id})
+        const info =await MenuKindModel.findOne({_id})
         if(info){
             return info
         }else {

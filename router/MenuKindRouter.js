@@ -41,7 +41,7 @@ router.post('/',(req,res)=>{
         MenuKindControl.addKinds({kind_name,child_kinds})
         .then((result)=>{
             if(result){
-                res.send(ResponseStatus.USER_HAS_EXISTED)
+                res.send(ResponseStatus.DATA_ALREADY_EXISTED)
             }else{
                 LogControl.logAdd('添加菜谱大类：' + kind_name);
                 res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'}))
@@ -155,7 +155,7 @@ router.delete('/del',(req,res)=>{
     })
 })
 /**
- * @api {get} /kinds  根据id查询一条记录
+ * @api {get} /kinds/findOne  根据id查询一条记录
  * @apiName findOne
  * @apiGroup menuKinds
  *
