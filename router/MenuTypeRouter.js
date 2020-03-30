@@ -35,14 +35,14 @@ router.get('/',(req,res)=>{
  * 
  **/
 router.post('/',(req,res)=>{
-    let {menu_name,menu_path}=req.body
+    let {menu_name,menu_path,list}=req.body
     if(menu_name){
         MenuTypeControl.addMenu({menu_name,menu_path})
         .then((result)=>{
-            if(result){
-                res.send(ResponseStatus.USER_HAS_EXISTED)
+            if(result.code==50003){
+                res.send(ResponseStatus.DATA_ALREADY_EXISTED)
             }else{
-                res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'}))
+                res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'添加成功'},{list:result}))
             }
         })
         .catch((msg)=>{
@@ -92,6 +92,32 @@ router.put('/',(req,res)=>{
     MenuTypeControl.menuAlter(_id,{menu_name,menu_path})
     .then(()=>{
         res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'修改成功'}))
+    })
+    .catch(()=>{
+        res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
+    })
+})
+/**
+ * @api {get} /menu  根据id查询一条记录
+ * @apiName findOne
+ * @apiGroup Menu
+ *
+ * @apiParam {String} _id 要查询的菜谱小类名_id
+ * 
+ * @apiSuccess {String} code 状态码
+ * @apiSuccess {String} msg  信息提示
+ * 
+ **/
+router.get('/findOne',(req,res)=>{
+    let {_id}=req.query
+    MenuTypeControl.findOne(_id)
+    .then((data)=>{
+        console.log('这里是data',data)
+        if(data.code == 20008) {
+            res.send(data)
+        }else {
+            res.send(Object.assign({},ResponseStatus.SUCCESS,{msg:'查询成功'},{list:data}))
+        }
     })
     .catch(()=>{
         res.send(ResponseStatus.PARAM_TYPE_BIND_ERROR)
