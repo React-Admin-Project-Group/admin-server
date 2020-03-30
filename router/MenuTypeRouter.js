@@ -3,7 +3,7 @@ const router=express.Router();
 const MenuTypeControl =require('../control/MenuTypeControl');
 const ResponseStatus =require('../common/responseStatus');
 /**
- * @api {post} /menu 获取菜谱列表
+ * @api {get} /menu 获取菜谱列表
  * @apiName menuList
  * @apiGroup Menu
  *
