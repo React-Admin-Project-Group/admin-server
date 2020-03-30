@@ -89,10 +89,11 @@ router.post('/', (req, res) => {
       global.user_id = result._id
       LogControl.logAdd('登录', 1)
       /* 返回上一次登录的时间和ip地址 */
-      LogControl.lastLogin()
+      res.send(Object.assign({}, ResponseStatus.SUCCESS , {list: result}))
+      /* LogControl.lastLogin()
         .then((last) => {
-          res.send(Object.assign({}, ResponseStatus.SUCCESS, { list: result, lastLogin: last }))
-        })
+           { list: result, lastLogin: last }))
+        }) */
       
     })
     .catch(msg => {
@@ -207,16 +208,6 @@ router.put('/logout', (req, res) => {
     res.send(ResponseStatus.USER_Login_Expire)
   }
 })
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router
