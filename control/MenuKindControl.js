@@ -31,15 +31,11 @@ const MenuKindControl={
             result = ResponseCode.DATA_NOT_EXIST
         }else{
             const infos =await MenuKindModel.find({_id})
-            if(infos[0].child_kinds == null) {
+            const child = infos[0].child_kinds.join(',')
+            if(child.length !== 0){
+                result = ResponseCode.CHILD_NOT_DELETE
+            }else{
                 result = await MenuKindModel.deleteOne({_id})
-            }else {
-                const child = infos[0].child_kinds.join(',')
-                if(child.length !== 0){
-                    result = ResponseCode.CHILD_NOT_DELETE
-                }else{
-                    result = await MenuKindModel.deleteOne({_id})
-                }
             }
         }
         if(result){
@@ -51,7 +47,10 @@ const MenuKindControl={
     /* 根据id修改菜谱大类名 */ 
     async kindsAlter(_id,updateInfo){
         // _id 要修改的菜谱大类的Id update 修改的目标数据
-        let result=await MenuKindModel.updateOne({_id},updateInfo)
+        let {kind_name} = updateInfo 
+        let info = await MenuKindModel.find({_id})
+        let child_kinds = info[0].child_kinds
+        let result=await MenuKindModel.updateOne({_id},{kind_name,child_kinds})
         if(result){
             return result
         }else{
