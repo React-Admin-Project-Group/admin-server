@@ -42,7 +42,7 @@ router.get('/', tokenMiddleWare, (req, res) => {
  * @apiSuccess {String} msg  信息提示
  * 
  */
-router.put('/', tokenMiddleWare, (req, res) => {
+router.put('/',  (req, res) => {
   let { username, password = '666666', authority = 0 } = req.body
   if (username) {
     AdminControl.adminRegister({ username, password, authority })
