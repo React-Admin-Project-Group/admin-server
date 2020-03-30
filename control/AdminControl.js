@@ -57,7 +57,6 @@ const AdminControl = {
   /* 根据ID删除管理员 */
   async adminDel (_id) {
     const result = await AdminModel.deleteOne({ _id })
-    // console.log('delResult:', result)
     if (result) {
       return result
     } else {

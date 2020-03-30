@@ -4,7 +4,8 @@ const ResponseStatus = require('../common/responseStatus')
 const router = express.Router()
 const tokenMiddleWare = require('../middleware/tokenMiddleWare')
 const { verifyToken } = require('../utils/jwt')
-
+const getIp = require('../common/getIp')
+const LogControl = require('../control/LogControl')
 /**
  * @api {get} /admin 获取管理员列表
  * @apiName adminList
@@ -50,6 +51,8 @@ router.put('/',  (req, res) => {
         if (result) {
           res.send(ResponseStatus.USER_HAS_EXISTED)
         } else {
+          // 添加添加日志
+          LogControl.logAdd('添加管理员:' + username)
           res.send(Object.assign({}, ResponseStatus.SUCCESS, { msg: '管理员添加成功' }))
         }
       })
@@ -81,7 +84,16 @@ router.post('/', (req, res) => {
   if (username && password) {
     AdminControl.adminLogin(username, password)
     .then((result) => {
-      res.send(Object.assign({}, ResponseStatus.SUCCESS, { list: result }))
+      /* 添加日志 */
+      global.ip = getIp(req)
+      global.user_id = result._id
+      LogControl.logAdd('登录', 1)
+      /* 返回上一次登录的时间和ip地址 */
+      LogControl.lastLogin()
+        .then((last) => {
+          res.send(Object.assign({}, ResponseStatus.SUCCESS, { list: result, lastLogin: last }))
+        })
+      
     })
     .catch(msg => {
       res.send(ResponseStatus.USER_LOGIN_ERROR)
@@ -112,6 +124,8 @@ router.delete('/delete', (req, res) => {
   if (tokenState) {
     AdminControl.tokenCheck(tokenState._id, token)
       .then((result) => {
+        global.user_id = tokenState._id
+        global.ip = getIp(req)
         if (_id) {
           if (_id == result._id) {
             res.send(ResponseStatus.PERMISSION_NOT_ENABLE)
@@ -121,10 +135,19 @@ router.delete('/delete', (req, res) => {
                 if (result.deletedCount === 0) {
                   res.send(Object.assign({}, ResponseStatus.SUCCESS, { msg: '该管理员已被删除' }))
                 } else {
-                  res.send(Object.assign({}, ResponseStatus.SUCCESS, { msg: '管理员删除成功' }))
+                   // 添加添加日志
+                  LogControl.logAdd('删除管理员')
+                    .then(()=> {
+                      res.send(Object.assign({}, ResponseStatus.SUCCESS, { msg: '管理员删除成功' }))
+                    })
+                    .catch( err => {
+                      console.log(err)
+                    })
+                  
                 }
               })
               .catch(err => {
+                console.log(err)
                 res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)
               })
           }
@@ -134,6 +157,8 @@ router.delete('/delete', (req, res) => {
       })
       .catch((err) => {
         // 用户token不匹配
+        global.user_id = ''
+        global.ip = ''
         res.send(ResponseStatus.USER_Login_Token_Error)
       })
   } else {
