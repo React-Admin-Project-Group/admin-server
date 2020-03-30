@@ -53,7 +53,7 @@ const LogControl = {
       type: 1
     }).sort({
       createTime: -1
-    })
+    }).skip(1)
     return {
       last,
       count

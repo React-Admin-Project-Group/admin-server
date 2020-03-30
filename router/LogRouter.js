@@ -46,5 +46,15 @@ router.delete('/', (req, res) => {
   }
 })
 
+router.get('/last',(req, res) => {
+  console.log('--------------------------')
+  LogControl.lastLogin()
+    .then(result => {
+      res.send(Object.assign({}, ResponseStatus.SUCCESS, result))
+    })
+    .catch(err => {
+      res.send(ResponseStatus.INTERFACE_INNER_INVOKE_ERROR)
+    })
+})
 module.exports = router
 
