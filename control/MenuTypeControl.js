@@ -21,12 +21,13 @@ const MenuTypeControl={
         //判断菜谱是否重复
         const isExist=await MenuTypeModel.findOne({menu_name})
         if(isExist){
-            return ResponseCode.USER_HAS_EXISTED
+            return ResponseCode.DATA_ALREADY_EXISTED
         }else{
             const result= await MenuTypeModel.insertMany({
                 menu_name,
                 menu_path,
             })
+            return result
         }
     },
     /* 根据_id删除菜谱 */
@@ -35,14 +36,29 @@ const MenuTypeControl={
         if(result){
             return result
         }else{
-            throw '请传递有效的菜谱id'
+            throw '请传递有效的菜谱小类id'
         }
     },
     /* 根据id修改菜谱 */ 
     async menuAlter(_id,updateInfo){
         // _id 要修改的菜谱的Id update 修改的目标数据
         let result=await MenuTypeModel.updateOne({_id},updateInfo)
-        return result
-    }
+        if(result){
+            return result
+        }else{
+            throw '请传递有效的菜谱小类id'
+        }
+    },
+    /* 根据id新增单个菜谱大类别*/
+    async findOne(_id){
+        // _id 根据id查询菜谱大类
+        const info=await MenuTypeModel.find({_id})
+        console.log('这里是info',info)
+        if(info){
+            return info
+        }else{
+            return ResponseCode.DATA_NOT_EXIST
+        }
+    } 
 }
 module.exports= MenuTypeControl
