@@ -15,9 +15,9 @@ const MenuKindControl={
         //判断菜谱大类名是否重复
         const isExist=await MenuKindModel.findOne({kind_name})
         if(isExist){
-            return ResponseCode.USER_HAS_EXISTED
+            return ResponseCode.DATA_HAS_EXISTED
         }else{
-            const result= await MenuKindModel.insertMany({
+            await MenuKindModel.insertMany({
                 kind_name,
                 child_kinds,
             })
@@ -75,6 +75,41 @@ const MenuKindControl={
         }else{
             throw '请传递有效的菜谱大类名id'
         }
-    }
+    },
+    /* 根据id删除单个菜谱子类别 */ 
+    async delChild_type(_id,child_id){
+        // _id 要修改的菜谱大类的Id child_id 子类别中要删除的子类
+        const info =await MenuKindModel.find({_id})
+        let kinds = info[0].child_kinds
+        const kind_name = info[0].kind_name
+        let child_kinds = []
+        let index = kinds.indexOf(child_id)
+        if(kinds.length !== 0) {
+            child_kinds = kinds.join(',').split(',')
+        }else {
+            child_kinds = kinds
+        }
+        if(index !== -1) {
+            child_kinds.splice(index,1)
+        }else {
+            return ResponseCode.DATA_NOT_EXIST
+        }
+        let result=await MenuKindModel.updateOne({_id},{kind_name,child_kinds})
+        if(result){
+            return result
+        }else{
+            throw '请传递有效的菜谱大类名id'
+        }
+    },
+    /* 根据id查询单条记录 */ 
+    async findOne(_id){
+        // _id 要查询的菜谱大类的Id
+        const info =await MenuKindModel.find({_id})
+        if(info){
+            return info
+        }else {
+            return ResponseCode.DATA_NOT_EXIST
+        }
+    },
 }
 module.exports= MenuKindControl
