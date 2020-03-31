@@ -80,7 +80,7 @@ router.delete('/delete',(req,res)=>{
     BannerControl.delBanner(_id)
     .then((result)=>{
         // 添加添加日志
-        LogControl.logAdd('添加广告:' + _id)
+        LogControl.logAdd('删除广告:' + _id)
         res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '删除成功'}))
     })
     .catch((msg)=>{
