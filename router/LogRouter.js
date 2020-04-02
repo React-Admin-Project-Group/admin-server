@@ -47,7 +47,6 @@ router.delete('/', (req, res) => {
 })
 
 router.get('/last',(req, res) => {
-  console.log('--------------------------')
   LogControl.lastLogin()
     .then(result => {
       res.send(Object.assign({}, ResponseStatus.SUCCESS, result))

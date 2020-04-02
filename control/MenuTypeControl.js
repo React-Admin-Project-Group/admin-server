@@ -53,7 +53,6 @@ const MenuTypeControl={
     async findOne(_id){
         // _id 根据id查询菜谱大类
         const info=await MenuTypeModel.find({_id})
-        console.log('这里是info',info)
         if(info){
             return info
         }else{

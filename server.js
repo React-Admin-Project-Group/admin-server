@@ -23,8 +23,6 @@ app.use('/admin', AdminRouter)
 app.use('/upload', tokenMiddleWare, ImgUploadRouter)
 app.use('/log', tokenMiddleWare, LogRouter)
 app.use('/banner', tokenMiddleWare, BannerRouter)
-app.use('/menu', MenuTypeRouter)
-app.use('/banner',BannerRouter)
 app.use('/menu',tokenMiddleWare, MenuTypeRouter)
 app.use('/kinds',tokenMiddleWare,MenuKindRouter)
 
