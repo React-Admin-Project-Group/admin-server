@@ -14,7 +14,7 @@ const BannerControl = {
                     list: result.map(item=>{
                         return {
                             _id:item['_id'],
-                            banner_id:item.banner_id,
+                            // banner_id:item.banner_id,
                             banner_name:item.banner_name,
                             banner_type:item.banner_type
                         }

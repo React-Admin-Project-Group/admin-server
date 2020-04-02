@@ -105,9 +105,9 @@ router.delete('/delete',(req,res)=>{
  */
 
 router.put('/',(req,res)=>{
-    const {_id,banner_id,banner_name,banner_type} = req.body
-    // console.log(_id,banner_id,banner_name,banner_type)
-    BannerControl.updated(_id,{banner_id,banner_name,banner_type})
+    const {_id,banner_name,banner_type} = req.body
+    // console.log(_id,banner_name,banner_type)
+    BannerControl.updated(_id,{banner_name,banner_type})
     .then((result)=>{
         res.send(Object.assign({}, ResponseStatus.SUCCESS, {msg: '修改成功'}))
     })

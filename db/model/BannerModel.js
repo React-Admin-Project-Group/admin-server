@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 
 let BannerSchema =new mongoose.Schema({
-    banner_id:{type:Number,required:true},
+    // banner_id:{type:Number,required:true},
     banner_name:{type:String,required:true},
     banner_type:{type:String,required:true}
 });
