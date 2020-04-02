@@ -112,7 +112,6 @@ router.get('/findOne',(req,res)=>{
     let {_id}=req.query
     MenuTypeControl.findOne(_id)
     .then((data)=>{
-        console.log('这里是data',data)
         if(data.code == 20008) {
             res.send(data)
         }else {

@@ -8,7 +8,6 @@ const router = express.Router()
 const ResponseStatus = require('../common/responseStatus')
 
 router.post('/kindImgUpload', upload.single('img'), (req, res) => {
-  console.log('req:', req.file)
   const { buffer, mimetype, size } = req.file
   if (size > 1000000) {
     return res.send(ResponseStatus.DATA_IMG_LARGE)

@@ -6,7 +6,6 @@ const LogControl = {
     const count = await LogModel.countDocuments({user_id})
     let result = null
     if (startTime && endTime) {
-       console.log(startTime, endTime)
        const startDate = new Date(startTime).getTime()
        const endDate = new Date(endTime).getTime()
        result = await LogModel.find({
@@ -32,7 +31,6 @@ const LogControl = {
   /* 插入一条用户日志 */
   async logAdd (log, type = 0) {
     const { user_id, ip } = global
-    // console.log('添加一条日志：', user_id, ip)
     return await LogModel.insertMany({
       user_id,
       log,
